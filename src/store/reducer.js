@@ -10,7 +10,8 @@ export const initialState = {
       price: 1000,
       rating: 4,
       instock: "only few left",
-      addedToCart: false
+      addedToCart: false,
+      category: "clothing"
     },
     {
       id: 102,
@@ -20,7 +21,8 @@ export const initialState = {
       price: 500,
       rating: 3,
       instock: "in Stock",
-      addedToCart: false
+      addedToCart: false,
+      category: "clothing"
     },
     {
       id: 103,
@@ -30,7 +32,8 @@ export const initialState = {
       price: 1500,
       rating: 3.5,
       instock: "in Stock",
-      addedToCart: false
+      addedToCart: false,
+      category: "footwear"
     },
     {
       id: 104,
@@ -40,7 +43,8 @@ export const initialState = {
       price: 800,
       rating: 3,
       instock: "in Stock",
-      addedToCart: false
+      addedToCart: false,
+      category: "footwear"
     },
     {
       id: 105,
@@ -50,7 +54,8 @@ export const initialState = {
       price: 600,
       rating: 5,
       instock: "in Stock",
-      addedToCart: false
+      addedToCart: false,
+      category: "accessory"
     }
   ],
   cart: {}
@@ -58,6 +63,19 @@ export const initialState = {
 
 const productsReducer = (state = initialState, action) => {
   switch (action.type) {
+    case "GET_PRODUCTS":
+      let filteredProducts = [...initialState.products];
+      if (action.param !== "all") {
+        filteredProducts = filteredProducts.filter((product) => {
+          console.log(product.category);
+          return product.category == action.param;
+        });
+        console.log(filteredProducts, action.param);
+      }
+      return {
+        ...state,
+        products: [...filteredProducts]
+      };
     case "ASSIGN_PRODUCT":
       console.log(action.param, state);
       return {
@@ -66,13 +84,11 @@ const productsReducer = (state = initialState, action) => {
       };
     case "ADD_TO_CART":
       let products = { ...state.cart };
-      console.log(products);
       const newId = action.payload.id;
       if (products[newId]) {
-        products[newId].qty = products[newId].qty + 1;
+        products[newId].qty = products[newId].qty + action.payload.qty;
       } else {
-        products[newId] = action.payload;
-        products[newId].qty = 1;
+        products[newId] = { ...action.payload };
       }
 
       return {

@@ -19,7 +19,8 @@ class Cart extends React.Component {
           </div>
         ) : (
           <p>
-            Add Items to cart <br /> <Link to="/products">Go To Products</Link>
+            Add Items to cart <br />{" "}
+            <Link to="/products/all">Go To Products</Link>
           </p>
         )}
       </div>

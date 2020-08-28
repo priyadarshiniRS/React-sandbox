@@ -1,15 +1,39 @@
-import React from "react";
-export default class Product extends React.Component {
-  render() {
-    const { img, desc, price, style, qty } = this.props;
-    return (
-      <div style={style}>
-        <img src={img} alt={desc} />
-        <br />
-        <p>{desc}</p>
-        <p>Price: {price}</p>
-        <p>Qty: {qty ? qty : 1}</p>
-      </div>
-    );
-  }
-}
+import React, { useState } from "react";
+const Product = ({
+  img,
+  desc,
+  price,
+  style,
+  qty: Qty,
+  addToCart,
+  goToDetail
+}) => {
+  const itemQty = Qty ? Qty : 1;
+  const [qty, setQty] = useState(itemQty);
+  return (
+    <div style={style}>
+      <img src={img} alt={desc} onClick={goToDetail} />
+      <br />
+      <p>{desc}</p>
+      <p>Price: {price}</p>
+      <p>
+        Qty:{" "}
+        <input
+          value={qty ? qty : 1}
+          onChange={(e) => setQty(Number(e.target.value))}
+        />
+      </p>
+      {addToCart && (
+        <button
+          onClick={(event) => {
+            // event.stopPropagation();
+            addToCart(qty);
+          }}
+        >
+          Add to Cart
+        </button>
+      )}
+    </div>
+  );
+};
+export default Product;
